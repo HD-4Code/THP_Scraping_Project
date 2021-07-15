@@ -1,20 +1,20 @@
 require 'rubygems'
   require 'nokogiri'
     require 'open-uri'
-        require 'pry'
+        
 
 def scrapping
   page = Nokogiri::HTML(URI.open("https://coinmarketcap.com/all/views/all"))
 
-  crypto_ticker_symbol = page.xpath('//td[contains(@class,"symbol")]')
+  crypto_name_symbol = page.xpath('//td[contains(@class,"symbol")]')
 
-  crypto_price = page.xpath('//td[contains(@class,"price")]')
+  crypto_value = page.xpath('//td[contains(@class,"price")]')
 
-  crypto_ticker_symbol_array = crypto_ticker_symbol.collect(&:text)
+  crypto_name_symbol_array = crypto_name_symbol.collect(&:text)
 
-  crypto_price_array = crypto_price.collect(&:text)
+  crypto_value_array = crypto_value.collect(&:text)
 
-  data = Hash[crypto_ticker_symbol_array.zip crypto_price_array]
+  data = Hash[crypto_name_symbol_array.zip crypto_value_array]
   
   final_data = data.map {|key, value| puts "#{key} => #{value.delete("$,").to_f}"}
     return final_data
